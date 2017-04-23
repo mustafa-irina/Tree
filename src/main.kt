@@ -1,8 +1,8 @@
-import BST.BST
+import RBT.RBT
+import Tree.Tree
 
 fun main(args: Array<String>) {
-    var tree: BST<Int> = BST<Int>()
-
+    var tree: Tree<Int> = RBT()
     tree?.add(10)
     tree?.add(5)
     tree?.add(4)
@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
     println()
     println(tree?.find(7))
     println(tree?.find(100))
-    tree?.delete(12)
+    /*tree?.delete(12)
     tree?.printTree()
     println()
     tree?.delete(8)
@@ -26,5 +26,5 @@ fun main(args: Array<String>) {
     println()
     println(tree?.find(10))
     tree?.delete(17)
-    tree?.printTree()
+    tree?.printTree()*/
 }
