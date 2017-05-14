@@ -61,6 +61,7 @@ class BSTElement<T: Comparable<T>> : TreeElement<T> {
                 if (right?.left == null) {
                     right?.left = left
                     right?.parent = parent
+                    left?.parent = right
                     if (parent == null) {
                         parent = right
                         return // см. коммет 2

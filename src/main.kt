@@ -1,3 +1,4 @@
+import BST.BST
 import RBT.RBT
 import Tree.Tree
 
@@ -14,6 +15,13 @@ fun main(args: Array<String>) {
     println()
     println(tree?.find(7))
     println(tree?.find(100))
+    tree?.delete(10)
+    tree?.printTree()
+    println()
+    println(tree?.find(10))
+    tree?.delete(5)
+    tree?.printTree()
+    println(tree?.find(5))
     /*tree?.delete(12)
     tree?.printTree()
     println()

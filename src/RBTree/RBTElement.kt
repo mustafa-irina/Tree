@@ -116,7 +116,121 @@ class RBTElement<T: Comparable<T>> : TreeElement<T> {
             }
         }
     }
-    override fun delete(removeKey: T){}
+
+    override fun removeChild(newKey: T) {
+        if (left?.key == newKey)
+            left = null
+        if (right?.key == newKey)
+            right = null
+    }
+
+    fun balanceDel(){
+        if (parent != null){
+            if (brother()?.color == Color.Red) {
+                parent?.color = Color.Red
+                brother()?.color = Color.Black
+                if (parent?.left == this)
+                    parent?.rotateLeft()
+                if (parent?.right == this)
+                    parent?.rotateRight()
+                parent?.balanceDel()
+            }
+            if (brother()?.color == Color.Black){
+                if (brother()?.right?.color == Color.Black && brother()?.left?.color == Color.Black){
+                    parent?.color = Color.Black
+                    brother()?.color = Color.Red
+                    parent?.balanceDel()
+                }
+                if (brother()?.right?.color == Color.Black && brother()?.left?.color == Color.Red){
+                    brother()?.left?.color = Color.Black
+                    brother()?.color = Color.Red
+                    brother()?.rotateRight()
+                    parent?.balanceDel()
+                }
+                if (brother()?.right?.color == Color.Red){
+                    brother()?.color = parent!!.color
+                    parent?.color = Color.Black
+                    brother()?.right?.color == Color.Black
+                    if (parent?.left == this)
+                        parent?.rotateLeft()
+                    if (parent?.right == this)
+                        parent?.rotateRight()
+                    parent?.balanceDel()
+                }
+            }
+        }
+        check = true
+    }
+
+    fun deleteRed(removeKey: T){
+        var children: RBTElement<T>? = null
+        if (right == null && left == null)
+            parent?.removeChild(removeKey)
+        else if (right == null) {
+            left?.parent = parent
+            if (parent == null) {
+                parent = left
+                return
+            }
+            if (left!!.key > parent!!.key)
+                parent?.right = left
+            else
+                parent?.left = left
+        } else {
+            if (right?.left == null) {
+                right?.left = left
+                right?.parent = parent
+                left?.parent = right
+                if (parent == null) {
+                    parent = right
+                    return
+                }
+                if (parent!!.key > right!!.key)
+                    parent?.left = right
+                else
+                    parent?.right = right
+                return
+            }
+            var minRight: RBTElement<T>? = right
+            while (minRight?.left != null) {
+                minRight = minRight?.left
+            }
+            minRight?.right?.parent = minRight?.parent
+            minRight?.parent?.left = minRight?.right
+            children = minRight?.parent?.left
+            minRight?.left = left
+            minRight?.parent = parent
+            minRight?.right = right
+            right?.parent = minRight
+            if (parent == null) {
+                parent = minRight
+                return
+            }
+            if (minRight!!.key > parent!!.key)
+                parent?.right = minRight
+            else
+                parent?.left = minRight
+
+        }
+        if (check == false && children != null){
+            children!!.balanceDel()
+        } else check = true
+    }
+
+    override fun delete(removeKey: T){
+        if (key > removeKey)
+            left?.delete(removeKey)
+        if (key < removeKey)
+            right?.delete(removeKey)
+        if (key == removeKey) {
+            if (color == Color.Red){
+                deleteRed(removeKey)
+            } else if (color == Color.Black) {
+                check = false
+                deleteRed(removeKey)
+            }
+        }
+    }
     override fun printTree(){
         print("(")
         left?.printTree()
@@ -129,10 +243,10 @@ class RBTElement<T: Comparable<T>> : TreeElement<T> {
         right?.printTree()
         print(")")
     }
-    override fun removeChild(newKey: T){}
 
     var left: RBTElement<T>? = null
     var right: RBTElement<T>? = null
     var parent: RBTElement<T>? = null
     var color: Color = Color.Black
+    var check: Boolean? = true
 }

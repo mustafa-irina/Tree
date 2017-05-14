@@ -14,7 +14,11 @@ class RBT<T: Comparable<T>> : Tree<T>{
             root = root?.parent
         }
     }
-    override fun delete(removeKey: T) {}
+    override fun delete(removeKey: T) {
+        root?.delete(removeKey)
+        if (root?.key == removeKey)
+            root = root?.parent
+    }
     override fun find(searchKey: T): Boolean {
         var res: Boolean? = root?.find(searchKey)
         return (res != null) && res
