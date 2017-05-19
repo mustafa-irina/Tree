@@ -204,7 +204,7 @@ class RBTElement<T: Comparable<T>> : TreeElement<T> {
             right?.parent = minRight
             if (parent == null) {
                 parent = minRight
-                return
+                return // см. коммент 2
             }
             if (minRight!!.key > parent!!.key)
                 parent?.right = minRight
