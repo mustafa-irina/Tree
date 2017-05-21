@@ -4,7 +4,7 @@ import RBT.RBT
 import Tree.Tree
 
 fun main(args: Array<String>) {
-    var tree: Tree<Int> = BT()
+    var tree: RBT<Int> = RBT()
     tree?.add(10)
     tree?.add(5)
     tree?.add(4)
@@ -12,10 +12,17 @@ fun main(args: Array<String>) {
     tree?.add(7)
     tree?.add(17)
     tree?.add(8)
+    tree?.add(7)
     tree?.printTree()
     println()
     println(tree?.find(7))
     println(tree?.find(100))
+
+    var it = tree.iterator()
+    while (it.hasNext()) {
+        println(it.next().key)
+    }
+
 //    tree?.delete(10)
 //    tree?.printTree()
 //    println()

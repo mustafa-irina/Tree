@@ -162,7 +162,7 @@ class RBTElement<T: Comparable<T>> : TreeElement<T> {
         check = true
     }
 
-    fun deleteRed(removeKey: T){
+    private fun deleteRed(removeKey: T){
         var children: RBTElement<T>? = null
         if (right == null && left == null)
             parent?.removeChild(removeKey)

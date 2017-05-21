@@ -4,7 +4,7 @@ import Tree.Tree
 import java.util.*
 
 
-class BT<Key : Comparable<Key>> : Iterable<BTElement<Key>>, Tree<Key> {
+class BT<T: Comparable<T>>: Iterable<BTElement<T>>, Tree<T> {
 
     var minDig = 3
 
@@ -12,14 +12,14 @@ class BT<Key : Comparable<Key>> : Iterable<BTElement<Key>>, Tree<Key> {
         minDig = dig
     }
 
-    private var root: BTElement<Key>? = BTElement()
+    private var root: BTElement<T>? = BTElement()
 
 
-    override fun find (key: Key) : Boolean{
+    override fun find (key: T) : Boolean {
         return findElement(key)
     }
 
-    private fun findElement(key: Key, element: BTElement<Key>? = root): Boolean {
+    private fun findElement(key: T, element: BTElement<T>? = root): Boolean {
 
         if (element == null)
             return false
@@ -40,9 +40,9 @@ class BT<Key : Comparable<Key>> : Iterable<BTElement<Key>>, Tree<Key> {
     }
 
 
-    private fun splitElement(parent: BTElement<Key>, mediana: Int, sc: BTElement<Key>?) {
+    private fun splitElement(parent: BTElement<T>, mediana: Int, sc: BTElement<T>?) {
 
-        var brother = BTElement<Key>()
+        var brother = BTElement<T>()
 
         for (i in 0..minDig - 2) {
             brother.keys.add(0, sc!!.keys.removeAt(sc.keys.size - 1))
@@ -58,9 +58,9 @@ class BT<Key : Comparable<Key>> : Iterable<BTElement<Key>>, Tree<Key> {
     }
 
 
-    override fun add(key: Key) {
+    override fun add(key: T) {
         if (root!!.keys.size == 2 * minDig - 1) {
-            var newRoot = BTElement<Key>()
+            var newRoot = BTElement<T>()
             newRoot.children.add(root!!)
             splitElement(newRoot, 0, root)
             root = newRoot
@@ -69,7 +69,7 @@ class BT<Key : Comparable<Key>> : Iterable<BTElement<Key>>, Tree<Key> {
         add_general(root!!, key)
     }
 
-    private fun add_general(currNode: BTElement<Key>, key: Key) {
+    private fun add_general(currNode: BTElement<T>, key: T) {
         var i = currNode.keys.size - 1
         while (i >= 0 && key < currNode.keys[i])
             i--
@@ -90,12 +90,12 @@ class BT<Key : Comparable<Key>> : Iterable<BTElement<Key>>, Tree<Key> {
         }
     }
 
-    override fun delete(removeKey: Key) {
+    override fun delete(removeKey: T) {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun printTree() {
-        var list: Queue<BTElement<Key>> = LinkedList()
+        var list: Queue<BTElement<T>> = LinkedList()
         var listChar: Queue<Char> = LinkedList()
 
         list.add(root)
@@ -124,26 +124,22 @@ class BT<Key : Comparable<Key>> : Iterable<BTElement<Key>>, Tree<Key> {
 
     }
 
-    override fun iterator(): Iterator<BTElement<Key>> {
-        return (object : Iterator<BTElement<Key>>
+    override fun iterator(): Iterator<BTElement<T>> {
+        return (object : Iterator<BTElement<T>>
         {
-            var nodes : Queue<BTElement<Key>> = LinkedList()
+            var nodes : Queue<BTElement<T>> = LinkedList()
 
             init {
                 if (!root!!.isEmpty())
                     nodes.add(root)
             }
             override fun hasNext(): Boolean {
-                return nodes.isEmpty()
+                return !nodes.isEmpty()
             }
 
-            override fun next(): BTElement<Key> {
+            override fun next(): BTElement<T> {
                 var curNode = nodes.poll()
-                if (!curNode.isLeaf()) {
-                    for (child in curNode.children) {
-                        nodes.add(child)
-                    }
-                }
+                curNode.children.forEach { child: BTElement<T> -> nodes.add(child) }
                 return curNode
             }
 
