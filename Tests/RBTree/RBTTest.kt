@@ -4,7 +4,6 @@ import RBT.RBT
 import RBT.RBTElement
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.util.*
 
 internal class RBTTest{
     val testRBTree = RBT<Int>()
@@ -13,24 +12,23 @@ internal class RBTTest{
     fun colorRoot(){
         testRBTree.add(1)
         assertEquals(testRBTree.root?.color, RBTElement.Color.Black)
-        for (i in 100..1) {
-           // val random = Random()
+        for (i in 1..100) {
             testRBTree.add(i)
             assertEquals(testRBTree.root?.color, RBTElement.Color.Black)
         }
     }
 
     @Test
-    fun deletion() {
-        for (i in 100..1)
+    fun deleteExistent() {
+        for (i in 1..100)
             testRBTree.add(i)
         testRBTree.delete(14)
         assertFalse(testRBTree.find(14))
     }
 
     @Test
-    fun deletioff() {
-        for (i in 100..1)
+    fun deleteNonexistent() {
+        for (i in 1..100)
             testRBTree.add(i)
         testRBTree.delete(105)
         assertFalse(testRBTree.find(105))
@@ -44,10 +42,19 @@ internal class RBTTest{
     }
 
     @Test
-    fun findcho() {
+    fun findNonexistent() {
         assertFalse(testRBTree.find(19))
     }
 
     @Test
-    fun iteratorTest() {}
+    fun iteratorTest() {
+        var k: Int = 0
+        for (i in 1..100)
+            testRBTree.add(i)
+        for (element in testRBTree) {
+            assertTrue(element.key in 1..100)
+            k++
+        }
+        assertEquals(k, 100)
+    }
 }
