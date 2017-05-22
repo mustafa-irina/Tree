@@ -47,7 +47,7 @@ internal class RBTTest{
     }
 
     @Test
-    fun iteratorTest() {
+    fun iteratorTest() { //b
         var k: Int = 0
         for (i in 1..100)
             testRBTree.add(i)
